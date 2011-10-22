@@ -1,9 +1,21 @@
 require File.expand_path(File.dirname(__FILE__) + '/edgecase')
 
 class AboutIteration < EdgeCase::Koan
+  in_ruby_version("1.8") do
+    def test_each_is_a_method_on_arrays
+      assert_equal __, [].methods.include?("each")
+    end
+  end
 
+<<<<<<< HEAD
   def test_each_is_a_method_on_arrays
     assert_equal true, [].methods.include?(:each)
+=======
+  in_ruby_version("1.9") do
+    def test_each_is_a_method_on_arrays
+      assert_equal __, [].methods.include?(:each)
+    end
+>>>>>>> upstream/master
   end
 
   def test_iterating_with_each
