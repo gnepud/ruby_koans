@@ -2,4 +2,8 @@ dist
 .project_env.rc
 .path_progress
 *.rbc
+<<<<<<< HEAD
 .DS_Store
+=======
+koans/*
+>>>>>>> upstream/master

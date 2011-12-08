@@ -2,6 +2,10 @@
 # -*- ruby -*-
 
 require 'test/unit/assertions'
+begin
+  require 'win32console'
+rescue LoadError
+end
 
 # --------------------------------------------------------------------
 # Support code for the Ruby Koans.
@@ -18,6 +22,11 @@ end
 
 def in_ruby_version(*versions)
   yield if versions.any? { |v| ruby_version?(v) }
+end
+
+in_ruby_version("1.8") do
+  class KeyError < StandardError
+  end
 end
 
 # Standard, generic replacement value.
@@ -40,8 +49,12 @@ def _n_(value=999999, value19=:mu)
 end
 
 # Error object replacement value.
-def ___(value=FillMeInError)
-  value
+def ___(value=FillMeInError, value19=:mu)
+  if RUBY_VERSION < "1.9"
+    value
+  else
+    (value19 == :mu) ? value : value19
+  end
 end
 
 # Method name replacement.
@@ -107,7 +120,9 @@ module EdgeCase
     def use_colors?
       return false if ENV['NO_COLOR']
       if ENV['ANSI_COLOR'].nil?
-        ! using_windows?
+        if using_windows?
+          using_win32console
+        end
       else
         ENV['ANSI_COLOR'] =~ /^(t|y)/i
       end
@@ -115,6 +130,10 @@ module EdgeCase
 
     def using_windows?
       File::ALT_SEPARATOR
+    end
+
+    def using_win32console
+      defined? Win32::Console
     end
   end
 
