@@ -42,8 +42,6 @@ module Koans
   def Koans.make_koan_file(infile, outfile)
     if infile =~ /edgecase/
       cp infile, outfile
-    elsif infile =~ /autotest/
-      cp_r infile, outfile
     else
       open(infile) do |ins|
         open(outfile, "w") do |outs|
@@ -88,14 +86,14 @@ end
 task :default => :walk_the_path
 
 task :walk_the_path do
-  cd 'koans'
+  cd PROB_DIR
   ruby 'path_to_enlightenment.rb'
 end
 
 if defined?(Rake::RDocTask)
   Rake::RDocTask.new do |rd|
     rd.main = "README.rdoc"
-    rd.rdoc_files.include("README.rdoc", "koans/*.rb")
+    rd.rdoc_files.include("README.rdoc", "${PROB_DIR}/*.rb")
   end
 end
 
@@ -140,7 +138,7 @@ end
 
 task :run do
   puts 'koans'
-  Dir.chdir("src") do
+  Dir.chdir("${SRC_DIR}") do
     puts "in #{Dir.pwd}"
     sh "ruby path_to_enlightenment.rb"
   end
